@@ -12,41 +12,35 @@ class.type
 discrete.name <- class.type$name[class.type$type == "Discrete"]
 continuous.name <- class.type$name[class.type$type == "continuous"]
 
-save.discrete.plot <- function(discrete.name) {
-  for (name in discrete.name) {
-    for (sn in discrete.name[-which(discrete.name == name)]) {
-      g <- ggplot(mpg, aes(x = name)) +
-        geom_bar() 
-      ggsave(filename = paste(name, "_", sn, ".png", sep = ""), plot = g, path = "../plot/dicrete/")
-    }
-  }
-}
-
-save.discrete.plot2 <- function(discrete.name, continuous.name) {
-  for (dn1 in discrete.name) {
-    for (dn2 in discrete.name[-which(discrete.name == dn1)]) {
-      for(cn in continuous.name) {
-        g <- ggplot(mpg, aes(x = dn1, y =cn, fill = dn2)) + geom_bar(stat = "identity")
-        ggsave(filename = paste(dn1, dn2, cn, ".png", sep = "_"), plot = g)
-      }
-    }
-  }
-}
-
-save.discrete.plot3 <- function(discrete.name, continuous.name) {
+save.bar.plot <- function(discrete.name, continuous.name) {
   for (dn1 in discrete.name) {
     for (dn2 in discrete.name[-which(discrete.name == dn1)]) {
       for(cn in continuous.name) {
         g <- ggplot(mpg, aes(x = get(dn1), y = get(cn), fill = get(dn2))) + 
           geom_bar(stat = "identity") + 
-          labs(x = dn1, y = cn)
-        ggsave(filename = paste(dn1, dn2, cn, ".png", sep = "_"), plot = g, path = "../plot/discrete")
+          labs(x = dn1, y = cn, fill = dn2)
+        ggsave(filename = paste(dn1, dn2, cn, ".png", sep = "_"), plot = g, path = "../plot/discrete/bar")
       }
     }
   }
 }
 
-save.discrete.plot3(discrete.name, continuous.name)
+save.point.plot <- function(discrete.name, continuous.name) {
+  for (dn1 in discrete.name) {
+    for (dn2 in discrete.name[-which(discrete.name == dn1)]) {
+      for(cn in continuous.name) {
+        g <- ggplot(mpg, aes(x = get(dn1), y = get(cn), color = get(dn2))) + 
+          geom_point() + 
+          labs(x = dn1, y = cn, color = dn2)
+        ggsave(filename = paste(dn1, dn2, cn, ".png", sep = "_"), plot = g, path = "../plot/discrete/point")
+      }
+    }
+  }
+}
+
+
+save.bar.plot(discrete.name, continuous.name)
+save.point.plot(discrete.name, continuous.name)
 
 #ggplot(mpg, aes(manufacturer)) + geom_bar()
 #ggplot(mpg, aes(manufacturer)) + geom_bar(colour = "fl")
