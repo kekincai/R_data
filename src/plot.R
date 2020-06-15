@@ -38,9 +38,44 @@ save.point.plot <- function(discrete.name, continuous.name) {
   }
 }
 
+# continuous ~ continuous
+save.c.c.plot <- function(continuous.name) {
+  for (dn1 in continuous.name) {
+    for (dn2 in continuous.name[-which(continuous.name == dn1)]) {
+        
+        p <- ggplot(mpg, aes(x = get(dn1), y = get(dn2))) + 
+          labs(x = dn1, y = dn2)
+        
+        g <- p + geom_point() 
+        j <- p + geom_jitter() 
+          
+        ggsave(filename = paste(dn1, dn2, ".png", sep = "_"), plot = g, path = "../plot/continuous_continuous/point")
+        ggsave(filename = paste(dn1, dn2, ".png", sep = "_"), plot = j, path = "../plot/continuous_continuous/jitter")
+    }
+  }
+}
 
-save.bar.plot(discrete.name, continuous.name)
-save.point.plot(discrete.name, continuous.name)
+save.d.c.plot <- function(discrete.name, continuous.name) {
+  for (dn1 in discrete.name) {
+      for(cn in continuous.name) {
+        
+        p <- ggplot(mpg, aes(x = get(dn1), y = get(cn))) + 
+          labs(x = dn1, y = cn)
+        
+        b <- p + geom_boxplot() 
+        
+        v <- p + geom_violin() 
+        
+        
+        ggsave(filename = paste(dn1, cn, ".png", sep = "_"), plot = b, path = "../plot/discrete_continuous/boxplot")
+        ggsave(filename = paste(dn1, cn, ".png", sep = "_"), plot = v, path = "../plot/discrete_continuous/violin")
+      }
+    }
+}
+
+#save.bar.plot(discrete.name, continuous.name)
+#save.point.plot(discrete.name, continuous.name)
+save.d.c.plot(discrete.name, continuous.name)
 
 #ggplot(mpg, aes(manufacturer)) + geom_bar()
 #ggplot(mpg, aes(manufacturer)) + geom_bar(colour = "fl")
